@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+
+model User {
+  id String @db.Uuid() @id @default(uuid())
+
+  username String
+  email String @unique
+  password String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  transactions Transaction[]
+
+  @@map("users")
+}
+
+model Item {
+  id String @db.Uuid() @id @default(uuid())
+
+  name String @db.VarChar(255)
+  price Decimal @db.Money
+  desc String? @db.Text
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  transactions TransactionTtem[]
+
+  @@map("items")
+}
+
+model Transaction {
+  id String @db.Uuid() @id @default(uuid())
+
+  date DateTime @db.Timestamptz() @default(now())
+
+  user_id String @db.Uuid
+  user User @relation(fields: [user_id],references: [id])
+
+  total Decimal @db.Money
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  items TransactionTtem[]
+
+  @@map("transactions")
+}
+
+model TransactionTtem {
+  id String @db.Uuid() @id @default(uuid())
+
+  transaction_id String @db.Uuid
+  transaction Transaction @relation(fields: [transaction_id],references: [id])
+
+  item_id String @db.Uuid
+  item Item @relation(fields: [item_id],references: [id])
+
+  amount Int @db.Integer
+
+  subtotal Decimal @db.Money
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("transaction-item")
+}
