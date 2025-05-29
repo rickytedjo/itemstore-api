@@ -13,7 +13,7 @@
 
 ## Tentang Proyek
 
-NgeJobList adalah aplikasi backend canggih untuk memfasilitasi pencarian dan publikasi lowongan pekerjaan, dirancang untuk memberikan pengalaman yang efisien bagi perekrut dan pencari kerja.
+Itemstore API adalah API sederhana yang dapat meng-handle skenario transaksi sederhana.
 
 ## Arsitektur Proyek: Domain Driven Structure
 
