@@ -64,7 +64,7 @@ describe('AppController (e2e)', () => {
     const createBody = {
       transaction: { user_id: 'placeholder-uuid' },
       transactionitem: { item_id: 'placeholder-uuid',transaction_id: 'placeholder-uuid', amount: 2 },
-      user: { email: 'user@example.com', password: 'userpass', username: 'user1' },
+      user: { email: 'user@gmail.com', password: 'userpass', username: 'user1' },
       item: { name: 'Item', price: 50.99, desc: 'description' }
     };
 
@@ -89,21 +89,22 @@ describe('AppController (e2e)', () => {
         it(`should create ${entity} with auth`, async () => {
           if (entity === 'transaction') {
             createBody.transaction.user_id = ids.user;
-            updateBody.transaction.user_id = ids.user;
+            updateBody.transaction.user_id = "79b27b7f-4576-48bb-b801-7f43c662d6ed";
+          
           }
           if(entity === 'transactionitem'){
             createBody.transactionitem.transaction_id = ids.transaction;
             createBody.transactionitem.item_id = ids.item;
           }
+          const id = await pactum.spec()
+              .post(`${baseUrl}/${entity}`)
+              .withBearerToken('$S{token}')
+              .withBody(createBody[entity])
+              .expectStatus(201)
+              .returns('data');
 
-          const spec = pactum.spec()
-            .post(`${baseUrl}/${entity}`)
-            .withBearerToken('$S{token}')
-            .withBody(createBody[entity])
-            .expectStatus(201)
-            .stores(ids[entity],'id');
-
-          // ids[entity] = await spec.returns('id');
+            console.log(id);
+            ids[entity] = id.id;
         });
 
         it(`should get many ${entity}`, async () => {
@@ -114,23 +115,26 @@ describe('AppController (e2e)', () => {
         });
 
         it(`should get one ${entity}`, async () => {
+          const id = ids[entity]
           await pactum.spec()
-            .get(`${baseUrl}/${entity}/${ids[entity]}`)
+            .get(`${baseUrl}/${entity}/${id}`)
             .withBearerToken('$S{token}')
             .expectStatus(200);
         });
 
         it(`should update ${entity}`, async () => {
+          const id = ids[entity]
           await pactum.spec()
-            .patch(`${baseUrl}/${entity}/${ids[entity]}`)
+            .patch(`${baseUrl}/${entity}/${id}`)
             .withBearerToken('$S{token}')
             .withBody(updateBody[entity])
             .expectStatus(200);
         });
 
         it(`should delete ${entity}`, async () => {
+          const id = ids[entity]
           await pactum.spec()
-            .delete(`${baseUrl}/${entity}/${ids[entity]}`)
+            .delete(`${baseUrl}/${entity}/${id}`)
             .withBearerToken('$S{token}')
             .expectStatus(200);
         });
@@ -138,20 +142,22 @@ describe('AppController (e2e)', () => {
         it(`should create ${entity} for next entity`, async () => {
           if (entity === 'transaction') {
             createBody.transaction.user_id = ids.user;
-            updateBody.transaction.user_id = ids.user;
+            updateBody.transaction.user_id = "79b27b7f-4576-48bb-b801-7f43c662d6ed";
+          
           }
           if(entity === 'transactionitem'){
             createBody.transactionitem.transaction_id = ids.transaction;
             createBody.transactionitem.item_id = ids.item;
           }
+          const id = await pactum.spec()
+              .post(`${baseUrl}/${entity}`)
+              .withBearerToken('$S{token}')
+              .withBody(createBody[entity])
+              .expectStatus(201)
+              .returns('data');
 
-          const spec = pactum.spec()
-            .post(`${baseUrl}/${entity}`)
-            .withBearerToken('$S{token}')
-            .withBody(createBody[entity])
-            .expectStatus(201)
-            .stores(ids[entity],'id');
-
+            console.log(id);
+            ids[entity] = id.id;
         });
 
         it(`should reject get ${entity} by id without auth`, async () => {
