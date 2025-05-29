@@ -1,98 +1,176 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+<br />
+<div>
+  <img src="./swagger.png" alt="Logo" height="600">
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+  <h3>Item Store API</h3>
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+  <p>
+    API sederhana untuk mencatat transaksi sederhana
+    <br /><br />
+    <a href="https://documenter.getpostman.com/view/29780531/2sB2qf9yVW"><strong>Explore the docs</strong></a>
+  </p>
+</div>
 
-## Description
+## Tentang Proyek
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+NgeJobList adalah aplikasi backend canggih untuk memfasilitasi pencarian dan publikasi lowongan pekerjaan, dirancang untuk memberikan pengalaman yang efisien bagi perekrut dan pencari kerja.
 
-## Project setup
+## Arsitektur Proyek: Domain Driven Structure
+
+### Struktur Direktori
+
+ ```plaintext
+  ├───config
+  ├───prisma
+  └───modules
+      ├───auth
+      │   ├───controller
+      │   ├───dto
+      │   ├───guard
+      │   ├───service
+      │   └───strategy
+      ├───item
+      │   ├───controller
+      │   ├───dto
+      │   └───service
+      ├───transaction
+      │   ├───controller
+      │   ├───dto
+      │   └───service
+      └───user
+          ├───controller
+          ├───dto
+          └───service
+ ```
+
+---
+
+### Keunggulan Domain Driven Structure
+1. Modularitas Tinggi
+
+  - Setiap domain (misalnya auth, transaction, user) berdiri sendiri dengan dependensi minimal terhadap domain lain.
+
+  - Dapat dipisah dengan mudah jika akan dijadikan microservices.
+
+2. Scalability
+
+  - Struktur ini tetap rapi dan terorganisir saat jumlah fitur bertambah.
+
+  - Penambahan domain baru dapat dilakukan tanpa mengganggu domain lain.
+
+3. Separation of Concerns
+
+  - Logika bisnis (service), logika presentasi (controller), dan kontrak data (dto) dipisah secara jelas.
+
+  - Mempermudah testing, debugging, dan pemeliharaan.
+
+## Prerequisites
+
+Ensure you have the following installed:
+
+1. **Node.js** (v18 or higher) - [Download Node.js](https://nodejs.org/)
+2. **npm** (bundled with Node.js) or **Yarn** (latest version)
+3. **PostgreSQL** (v13 or higher) - [Download PostgreSQL](https://www.postgresql.org/)
+4. **Git** - [Download Git](https://git-scm.com/)
+
+
+## 🚦 Instalasi
+
+### 1. Clone the Repository
 
 ```bash
-$ npm install
+git clone https://github.com/rickytedjo/itemstore-api
+cd ngejoblist
 ```
+--- 
+### 2. Install Dependencies
 
-## Compile and run the project
+Run the following command to install required packages:
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Run tests
+or if using Yarn:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+yarn install
 ```
+---
+### 3. Environment Setup
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+Create a `.env` file in the root directory. Use the `.env.example` file as a template:
 
 ```bash
-$ npm install -g mau
-$ mau deploy
+cp .env.example .env
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Fill in the necessary environment variables in the `.env` file. For example:
 
-## Resources
+```env
+# Konfigurasi Database
+PORT="3000" //Based on available ports in your device
 
-Check out a few resources that may come in handy when working with NestJS:
+DATABASE_URL="postgresql://[username]:[password]@[host]:[port]/[name]?schema=public"
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+JWT_SECRET="any_random_special_word"
+```
 
-## Support
+---
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### 4. Database Setup
 
-## Stay in touch
+#### a. Create the Database (Opsional)
+Ensure PostgreSQL is running and create a new database for the application:
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```sql
+CREATE DATABASE your_database_name;
+```
 
-## License
+P.S: Prisma could create a new database automatically for you if it doesn't exist.
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+#### b. Run Database Migrations
+
+Run the Prisma migrations to set up the database schema:
+
+```bash
+npx prisma migrate dev
+```
+
+---
+
+### 5. Start the Application
+
+Run the application in development mode:
+
+```bash
+npm run start:dev
+```
+---
+
+### 6. Running Tests
+
+To run end-to-end (e2e) tests:
+
+```bash
+npm run test:e2e
+```
+
+---
+
+## API Documentation
+
+The application comes with integrated Swagger documentation. After starting the server, visit:
+
+```
+http://localhost:<PORT>/api/docs
+```
+
+Here, `<PORT>` is the port specified in the `.env` file (default: 3000).
+
+---
+
+## Kontak
+Email: <rickyputra.tedjo@gmail.com>
+
+Link Proyek: <https://github.com/rickytedjo/itemstore-api>
